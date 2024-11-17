@@ -12,8 +12,8 @@ function DropZone(props) {
     onDrop: (incomingFiles) => {
       if (hiddenInputRef.current) {
         const dataTransfer = new DataTransfer();
-        incomingFiles.forEach((v) => {
-          dataTransfer.items.add(v);
+        incomingFiles.forEach((file) => {
+          dataTransfer.items.add(file);
         });
         hiddenInputRef.current.files = dataTransfer.files;
       }
