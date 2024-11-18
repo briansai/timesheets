@@ -21,7 +21,18 @@ function DropZone(props) {
   });
 
   const files = acceptedFiles.map((file) => {
-    console.log(file);
+    if (
+      file.type === "application/vnd.ms-excel" ||
+      file.type ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      // Do something with the Excel file
+      console.log("Valid Excel file:", file);
+    } else {
+      // Handle invalid file type
+      console.log("Invalid file type:", file.type);
+    }
+
     return (
       <li key={file.path}>
         {file.path} - {file.size} bytes
@@ -57,10 +68,8 @@ function DropZone(props) {
           </div>
 
           <div className="row-span-3">
-            <aside>
-              <h4>Files</h4>
-              <ul>{files}</ul>
-            </aside>
+            <h4>Files</h4>
+            <ul>{files}</ul>
           </div>
         </div>
       </div>
@@ -71,7 +80,7 @@ function DropZone(props) {
 <form
   onSubmit={(e) => {
     e.preventDefault();
-
+    console.log("potato");
     const formData = new FormData(e.currentTarget);
     const file = formData.get("my-file");
 
