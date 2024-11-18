@@ -1,10 +1,14 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import FilesListCorrect from "./FilesListCorrect";
+import FilesListError from "./FilesListError";
 
 function DropZone(props) {
   const { required, name } = props;
+  const { correct, setCorrect } = useState([]);
+  const [errors, setErrors] = useState([]);
 
   const hiddenInputRef = useRef(null);
 
@@ -68,8 +72,8 @@ function DropZone(props) {
           </div>
 
           <div className="row-span-3">
-            <h4>Files</h4>
-            <ul>{files}</ul>
+            <FilesListCorrect correct={correct} setCorrect={setCorrect} />
+            <FilesListError errors={errors} setErrors={setErrors} />
           </div>
         </div>
       </div>
