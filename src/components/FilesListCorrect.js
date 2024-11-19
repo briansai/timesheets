@@ -1,7 +1,7 @@
 import React from "react";
 
 const FilesListCorrect = (errors) => {
-  return <div></div>;
+  return <div>Files Correct</div>;
 };
 
 export default FilesListCorrect;
