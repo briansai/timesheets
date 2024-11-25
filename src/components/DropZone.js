@@ -12,6 +12,7 @@ function DropZone(props) {
     onDrop: (incomingFiles) => {
       if (hiddenInputRef.current) {
         const dataTransfer = new DataTransfer();
+
         incomingFiles.forEach((file) => {
           dataTransfer.items.add(file);
         });
@@ -19,54 +20,55 @@ function DropZone(props) {
       }
     },
   });
-  console.log(props);
-  const files = acceptedFiles.map((file) => {
+
+  const goodFiles = acceptedFiles.map((file) => {
     if (
       file.type === "application/vnd.ms-excel" ||
       file.type ===
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
-      // Do something with the Excel file
-
-      console.log("Valid Excel file:", file);
-    } else {
-      // Handle invalid file type
-      console.log("Invalid file type:", file.type);
+      return <li key={file.path}>{file.name}</li>;
     }
+  });
 
-    return (
-      <li key={file.path}>
-        {file.path} - {file.size} bytes
-      </li>
-    );
+  const badFiles = acceptedFiles.map((file) => {
+    console.log(file.type);
+    if (
+      file.type !== "application/vnd.ms-excel" ||
+      file.type !==
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      return <li key={file.path}>{file.name}</li>;
+    }
   });
 
   return (
-    <div className="container">
-      <div {...getRootProps({ className: "dropzone" })}>
-        {/*
-          Add a hidden file input 
-          Best to use opacity 0, so that the required validation message will appear on form submission
-        */}
-
-        <div className="row-span-3">
-          <input
-            type="file"
-            name={name}
-            required={required}
-            style={{ opacity: 0 }}
-            ref={hiddenInputRef}
-          />
-          <input {...getInputProps()} />
-          <p>Drag 'n' drop some Excel Timesheets here</p>
-          <button
-            type="button"
-            onClick={open}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Open File Dialog
-          </button>
-        </div>
+    <div className="grid grid-cols-3 grid-flow-col gap-4" {...getRootProps()}>
+      <div>
+        <input
+          type="file"
+          name={name}
+          required={required}
+          style={{ opacity: 0 }}
+          ref={hiddenInputRef}
+        />
+        <input {...getInputProps()} />
+        <p>Drag 'n' drop some Excel Timesheets here</p>
+        <button
+          type="button"
+          onClick={open}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Open File Dialog
+        </button>
+      </div>
+      <div>
+        Good Files
+        {goodFiles}
+      </div>
+      <div>
+        Bad Files
+        {badFiles}
       </div>
     </div>
   );
@@ -75,7 +77,7 @@ function DropZone(props) {
 <form
   onSubmit={(e) => {
     e.preventDefault();
-    console.log("potato");
+
     const formData = new FormData(e.currentTarget);
     const file = formData.get("my-file");
 
