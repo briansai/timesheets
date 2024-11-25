@@ -19,24 +19,24 @@ function DropZone(props) {
         hiddenInputRef.current.files = dataTransfer.files;
       }
     },
+    noClick: true,
   });
 
   const goodFiles = acceptedFiles.map((file) => {
     if (
-      file.type === "application/vnd.ms-excel" ||
+      // file.type === "application/vnd.ms-excel" ||
       file.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
       return <li key={file.path}>{file.name}</li>;
     }
   });
 
   const badFiles = acceptedFiles.map((file) => {
-    console.log(file.type);
     if (
-      file.type !== "application/vnd.ms-excel" ||
+      // file.type !== "application/vnd.ms-excel" ||
       file.type !==
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
       return <li key={file.path}>{file.name}</li>;
     }
