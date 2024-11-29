@@ -1,7 +1,7 @@
 import React from "react";
 
 const FilesListError = ({ errorsList }) => {
-  //   console.log("error-->", errorsList);
+  //   .log("error-->", errorsList);
   return (
     <div>
       <div>Files Error</div>

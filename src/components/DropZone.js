@@ -1,7 +1,9 @@
 "use client";
 
+import { traverseExcel } from "@/utils/functions/traverseExcel";
 import React, { useRef } from "react";
 import { useDropzone } from "react-dropzone";
+import readXlsxFile from "read-excel-file";
 
 function DropZone(props) {
   const { required, name } = props;
@@ -28,8 +30,16 @@ function DropZone(props) {
       file.type ===
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
-      return <li key={file.path}>{file.name}</li>;
+      const readTimesheet = async (ts) => {
+        const timesheet = await readXlsxFile(ts, { dateFormat: "mm/dd/yyyy" });
+        traverseExcel(timesheet);
+      };
+
+      readTimesheet(file);
     }
+
+    return <li key={file.path}>{file.name}</li>;
+    // }
   });
 
   const badFiles = acceptedFiles.map((file) => {
