@@ -1,12 +1,13 @@
 "use client";
 
 import { traverseExcel } from "@/utils/functions/traverseExcel";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import readXlsxFile from "read-excel-file";
 
 function DropZone(props) {
   const { required, name } = props;
+  const [errors, setErrors] = useState([]);
 
   const hiddenInputRef = useRef(null);
 
@@ -24,6 +25,15 @@ function DropZone(props) {
     noClick: true,
   });
 
+  // iterate through accepted files
+  // if file type is excel or spreadsheet
+  // read the timesheet
+  // if timesheet has errors
+  // push it into errors list
+  // else
+  // push it into correct list
+  // else
+  // return file name that says it is not an excel file
   const goodFiles = acceptedFiles.map((file) => {
     if (
       // file.type === "application/vnd.ms-excel" ||
@@ -32,13 +42,18 @@ function DropZone(props) {
     ) {
       const readTimesheet = async (ts) => {
         const timesheet = await readXlsxFile(ts, { dateFormat: "mm/dd/yyyy" });
-        traverseExcel(timesheet);
+        const tsErrors = traverseExcel(timesheet);
+
+        return tsErrors;
       };
 
-      readTimesheet(file);
+      const isTsCorrect = readTimesheet(file);
+
+      if (isTsCorrect) {
+        return <li key={file.path}>{file.name}</li>;
+      }
     }
 
-    return <li key={file.path}>{file.name}</li>;
     // }
   });
 

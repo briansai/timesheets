@@ -8,9 +8,10 @@ const calculateShiftTimes = (row) => {
       nums[startTime.getUTCMinutes()]
     }`;
     const end = `${endTime.getUTCHours()}.${nums[endTime.getUTCMinutes()]}`;
+    const totalHours = end - start;
 
     if (start > 0 || end > 0) {
-      return (end - start).toFixed(2);
+      return totalHours.toFixed(2);
     }
   }
 };
