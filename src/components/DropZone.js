@@ -1,13 +1,14 @@
 "use client";
 
 import { traverseExcel } from "@/utils/functions/traverseExcel";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import readXlsxFile from "read-excel-file";
+import FilesListCorrect from "./FilesListCorrect";
+import FilesListError from "./FilesListError";
 
 function DropZone(props) {
   const { required, name } = props;
-  const [errors, setErrors] = useState([]);
 
   const hiddenInputRef = useRef(null);
 
@@ -25,51 +26,54 @@ function DropZone(props) {
     noClick: true,
   });
 
-  // iterate through accepted files
-  // if file type is excel or spreadsheet
-  // read the timesheet
-  // if timesheet has errors
-  // push it into errors list
-  // else
-  // push it into correct list
-  // else
-  // return file name that says it is not an excel file
-  const goodFiles = acceptedFiles.map((file) => {
-    if (
-      // file.type === "application/vnd.ms-excel" ||
-      file.type ===
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    ) {
-      const readTimesheet = async (ts) => {
-        const timesheet = await readXlsxFile(ts, { dateFormat: "mm/dd/yyyy" });
-        const tsErrors = traverseExcel(timesheet);
+  const processedFiles = (timesheets) => {
+    let correctList = [];
+    let errorList = [];
 
-        return tsErrors;
-      };
+    timesheets.map((file) => {
+      file.errors = [];
+      if (
+        // file.type !== "application/vnd.ms-excel" ||
+        file.type ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ) {
+        const readTimesheet = async (ts) => {
+          const timesheet = await readXlsxFile(ts, {
+            dateFormat: "mm/dd/yyyy",
+          });
+          const tsErrors = traverseExcel(timesheet);
 
-      const isTsCorrect = readTimesheet(file);
+          return tsErrors;
+        };
 
-      if (isTsCorrect) {
-        return <li key={file.path}>{file.name}</li>;
+        const isTsCorrect = readTimesheet(file);
+
+        if (!isTsCorrect.length) {
+          correctList.push(file);
+        } else {
+          errorList.push(file);
+        }
+      } else {
+        file.errors.push("File type is not Excel.");
+        errorList.push(file);
       }
-    }
+    });
 
-    // }
-  });
-
-  const badFiles = acceptedFiles.map((file) => {
-    if (
-      // file.type !== "application/vnd.ms-excel" ||
-      file.type !==
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    ) {
-      return <li key={file.path}>{file.name}</li>;
-    }
-  });
+    return (
+      <>
+        <div className="row-span-2">
+          <FilesListCorrect correctList={correctList} />
+        </div>
+        <div className="row-span-2">
+          <FilesListError errorList={errorList} />
+        </div>
+      </>
+    );
+  };
 
   return (
     <div className="grid grid-cols-3 grid-flow-col gap-4" {...getRootProps()}>
-      <div>
+      <div className="row-span-2">
         <input
           type="file"
           name={name}
@@ -87,14 +91,7 @@ function DropZone(props) {
           Open File Dialog
         </button>
       </div>
-      <div>
-        Good Files
-        {goodFiles}
-      </div>
-      <div>
-        Bad Files
-        {badFiles}
-      </div>
+      {processedFiles(acceptedFiles)}
     </div>
   );
 }

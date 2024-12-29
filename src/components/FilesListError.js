@@ -1,12 +1,17 @@
 import React from "react";
+import ErrorsType from "./ErrorsType";
 
-const FilesListError = ({ errorsList }) => {
-  //   .log("error-->", errorsList);
+const FilesListError = ({ errorList }) => {
   return (
-    <div>
-      <div>Files Error</div>
-      <div>{errorsList}</div>
-    </div>
+    <ul>
+      <div className="font-bold text-lg">Files Error</div>
+      {errorList.map((error, idx) => (
+        <li key={`${error.name}-${idx}`}>
+          <div>* {error.name}</div>
+          <ErrorsType errorsType={error.errors} />
+        </li>
+      ))}
+    </ul>
   );
 };
 
