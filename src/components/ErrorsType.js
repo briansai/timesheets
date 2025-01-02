@@ -1,7 +1,6 @@
 import React from "react";
 
 const ErrorsType = ({ errorsType }) => {
-  console.log(errorsType);
   return (
     <ul>
       {errorsType.map((err, idx) => {

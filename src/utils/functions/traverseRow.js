@@ -2,7 +2,7 @@ import { matchHours } from "./matchHours";
 import { sumWeekCorrect } from "./sumWeekCorrect";
 
 const traverseRow = ({ row, hours }) => {
-  const errors = [];
+  let errors = [];
 
   const weekOne = row.slice(6, 13);
   const weekTwo = row.slice(13, row.length - 3);
@@ -10,6 +10,8 @@ const traverseRow = ({ row, hours }) => {
   const weekOneHoursMatch = matchHours({ week: weekOne, hours });
   const weekTwoHoursMatch = matchHours({ week: weekTwo, hours });
 
+  //push the hours in to errors array to return
+  // console.log(weekOneHoursMatch);
   // something wrong with sumWeekCorrect
   // issue with totalWeekHour
 
@@ -33,7 +35,7 @@ const traverseRow = ({ row, hours }) => {
 
   sumWeekOne && errors.push(`Week 1 error.  ${sumWeekOne}`);
   sumWeekTwo && errors.push(`Week 2 error.  ${sumWeekTwo}`);
-
+  // console.log(errors);
   return errors;
 };
 
