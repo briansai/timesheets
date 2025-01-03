@@ -11,7 +11,7 @@ const sumWeekCorrect = ({ week, totalWeekHour }) => {
   }, 0);
 
   if (sum !== totalWeekHour) {
-    sumCorrect = `${sum} does not equal to total weekly hours of ${totalWeekHour}.`;
+    sumCorrect = `The sum of ${sum} hours does not equal to total weekly hours of ${totalWeekHour}.`;
   }
 
   return sumCorrect;

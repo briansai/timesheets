@@ -28,9 +28,8 @@ const traverseRow = ({ row, hours }) => {
     errors.push(`Week 2 error - ${weekTwoHoursMatch.err}`);
   }
 
-  // what is this?
-  // sumWeekOne && errors.push(`Week 1 error - ${sumWeekOne}`);
-  // sumWeekTwo && errors.push(`Week 2 error - ${sumWeekTwo}`);
+  sumWeekOne && errors.push(`Week 1 Total Hours error - ${sumWeekOne}`);
+  sumWeekTwo && errors.push(`Week 2 Total Hours error - ${sumWeekTwo}`);
 
   return errors;
 };
