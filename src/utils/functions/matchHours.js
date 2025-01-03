@@ -1,7 +1,7 @@
 import React from "react";
 
 const matchHours = ({ week, hours }) => {
-  let hoursNotCorrect = "";
+  let err = "";
   let weekHours = [];
 
   for (let x = 0; x < week.length; x++) {
@@ -13,12 +13,12 @@ const matchHours = ({ week, hours }) => {
       hr = hr.toFixed(2);
 
       if (hr !== hours) {
-        hoursNotCorrect = `${hr} does not equal to the shift hours of ${hours}`;
+        err = `${hr} does not equal to the shift hours of ${hours}`;
       }
     }
   }
 
-  return { hoursNotCorrect, weekHours };
+  return { err, weekHours };
 };
 
 export { matchHours };

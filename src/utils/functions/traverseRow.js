@@ -9,12 +9,7 @@ const traverseRow = ({ row, hours }) => {
 
   const weekOneHoursMatch = matchHours({ week: weekOne, hours });
   const weekTwoHoursMatch = matchHours({ week: weekTwo, hours });
-
-  //push the hours in to errors array to return
   // console.log(weekOneHoursMatch);
-  // something wrong with sumWeekCorrect
-  // issue with totalWeekHour
-
   const sumWeekOne = sumWeekCorrect({
     week: weekOne,
     totalWeekHour: row[row.length - 2],
@@ -25,17 +20,18 @@ const traverseRow = ({ row, hours }) => {
     totalWeekHour: row[row.length - 1],
   });
 
-  if (weekOneHoursMatch.hours && weekOne.length !== 7) {
-    errors.push(`Week 1 error. ${weekOneHoursMatch.hoursNotCorrect}`);
+  if (weekOneHoursMatch.err) {
+    errors.push(`Week 1 error - ${weekOneHoursMatch.err}`);
   }
 
-  if (weekTwoHoursMatch.hours && weekOne.length !== 7) {
-    errors.push(`Week 2 error. ${weekTwoHoursMatch.hoursNotCorrect}`);
+  if (weekTwoHoursMatch.err) {
+    errors.push(`Week 2 error - ${weekTwoHoursMatch.err}`);
   }
 
-  sumWeekOne && errors.push(`Week 1 error.  ${sumWeekOne}`);
-  sumWeekTwo && errors.push(`Week 2 error.  ${sumWeekTwo}`);
-  // console.log(errors);
+  // what is this?
+  // sumWeekOne && errors.push(`Week 1 error - ${sumWeekOne}`);
+  // sumWeekTwo && errors.push(`Week 2 error - ${sumWeekTwo}`);
+
   return errors;
 };
 

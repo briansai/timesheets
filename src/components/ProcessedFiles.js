@@ -15,7 +15,6 @@ const ProcessedFiles = ({ timesheets }) => {
     if (arraysCompleted) {
       setCorrectList(corr);
       setErrorList(errs);
-      //   setArraysCompleted(false);
     }
 
     return;

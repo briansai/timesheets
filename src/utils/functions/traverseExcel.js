@@ -25,9 +25,11 @@ const traverseExcel = (excel) => {
           }:  No shift hours present throughout both weeks.  Please remove this row.`
         );
       }
-      // find out what this is for
+
       if (matchErrors.length) {
-        errors.push(`Row ${x + 1}: ${matchErrors} `);
+        matchErrors.forEach((err) => {
+          errors.push(`Row ${x + 1}: ${err} `);
+        });
       }
     }
   }
