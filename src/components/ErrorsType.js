@@ -5,7 +5,7 @@ const ErrorsType = ({ errorsType }) => {
     <ul>
       {errorsType.map((err, idx) => {
         return (
-          <li className="pl-6 text-red-500" key={`${err}-${idx}`}>
+          <li className="pl-6 mb-4 text-red-500" key={`${err}-${idx}`}>
             <span className="pr-4">-</span>
             <span>{err}</span>
           </li>
