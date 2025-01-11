@@ -9,7 +9,7 @@ const traverseRow = ({ row, hours }) => {
 
   const weekOneHoursMatch = matchHours({ week: weekOne, hours });
   const weekTwoHoursMatch = matchHours({ week: weekTwo, hours });
-  // console.log(weekOneHoursMatch);
+
   const sumWeekOne = sumWeekCorrect({
     week: weekOne,
     totalWeekHour: row[row.length - 2],

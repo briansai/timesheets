@@ -1,20 +1,36 @@
 import { calculateShiftTimes } from "./calculateShiftTimes";
+import { traverseCol } from "./traverseCol";
 import { traverseRow } from "./traverseRow";
 
 const traverseExcel = (excel) => {
   const timesheet = excel;
   const errors = [];
+  const activeRows = [];
+  // why does some have UNDEFINED date?
+  const twoWeeksOfDates = timesheet[12]
+    .slice(6, timesheet[12].length - 2)
+    .map((date) => {
+      if (date instanceof Date) {
+        const d = new Date(date);
+        const month = d.getUTCMonth() + 1;
+        const day = d.getUTCDate();
+
+        return `${month}/${day}`;
+      }
+    });
 
   for (let x = 0; x < timesheet.length; x++) {
-    const start = timesheet[x][4] instanceof Date;
-    const end = timesheet[x][5] instanceof Date;
+    const row = timesheet[x];
+    const start = row[4] instanceof Date && new Date(row[4]);
+    const end = row[5] instanceof Date && new Date(row[5]);
 
     if (start && end) {
-      const bothWeeks = timesheet[x].slice(6, timesheet[x].length - 3);
-      const shiftHours = calculateShiftTimes(timesheet[x]);
+      const bothWeeks = row.slice(6, row.length - 2);
+      const shiftHours = calculateShiftTimes(row);
+      activeRows.push({ start, end, idx: x + 1, bothWeeks });
 
       const matchErrors = traverseRow({
-        row: timesheet[x],
+        row,
         hours: shiftHours,
       });
 
@@ -33,6 +49,10 @@ const traverseExcel = (excel) => {
       }
     }
   }
+
+  traverseCol({ activeRows, twoWeeksOfDates }).forEach((err) =>
+    errors.push(err)
+  );
 
   return errors;
 };
