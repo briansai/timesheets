@@ -8,6 +8,7 @@ const traverseCol = ({ activeRows, twoWeeksOfDates }) => {
       const baseHour = activeRows[y].bothWeeks[x];
       const baseStart = activeRows[y].start.getUTCHours();
       const baseEnd = activeRows[y].end.getUTCMinutes();
+
       for (let z = y + 1; z < activeRows.length; z++) {
         const nextHour = activeRows[z].bothWeeks[x];
         const nextStart = activeRows[z].start.getUTCHours();
