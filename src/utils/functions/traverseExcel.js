@@ -10,6 +10,8 @@ const traverseExcel = (excel) => {
   const weekOneTotal = [];
   const weekTwoTotal = [];
   const totalHours = [];
+  let grandTotal = 0;
+
   // why does some have UNDEFINED date?
   const twoWeeksOfDates = timesheet[12]
     .slice(6, timesheet[12].length - 2)
@@ -31,6 +33,10 @@ const traverseExcel = (excel) => {
     if (row.includes("TOTAL HOURS")) {
       totalHours.push(row[row.length - 2]);
       totalHours.push(row[row.length - 1]);
+    }
+
+    if (row.includes("GRAND TOTAL")) {
+      grandTotal = row[row.length - 2];
     }
 
     if (start && end) {
@@ -73,9 +79,12 @@ const traverseExcel = (excel) => {
     twoWeeksOfDates,
   }).forEach((err) => errors.push(err));
 
-  calculateTotalHours({ weekOneTotal, weekTwoTotal, totalHours }).forEach(
-    (err) => errors.push(err)
-  );
+  calculateTotalHours({
+    weekOneTotal,
+    weekTwoTotal,
+    totalHours,
+    grandTotal,
+  }).forEach((err) => errors.push(err));
 
   return errors;
 };

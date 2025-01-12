@@ -1,4 +1,9 @@
-const calculateTotalHours = ({ weekOneTotal, weekTwoTotal, totalHours }) => {
+const calculateTotalHours = ({
+  weekOneTotal,
+  weekTwoTotal,
+  totalHours,
+  grandTotal,
+}) => {
   const errors = [];
 
   const weekOneSum = weekOneTotal.reduce((acc, cur) => {
@@ -13,8 +18,7 @@ const calculateTotalHours = ({ weekOneTotal, weekTwoTotal, totalHours }) => {
     return acc;
   }, 0);
 
-  console.log("week 1", weekOneSum);
-  console.log("totalhours-->", totalHours[0]);
+  const bothWeekSum = weekOneSum + weekTwoSum;
 
   if (weekOneSum !== totalHours[0]) {
     errors.push("Total hours for week one does not equal to the weekly sum");
@@ -22,6 +26,10 @@ const calculateTotalHours = ({ weekOneTotal, weekTwoTotal, totalHours }) => {
 
   if (weekTwoSum !== totalHours[1]) {
     errors.push("Total hours for week two does not equal to the weekly sum");
+  }
+
+  if (bothWeekSum !== grandTotal) {
+    errors.push("Grand total does not equal to the sum of both total hours");
   }
 
   return errors;
