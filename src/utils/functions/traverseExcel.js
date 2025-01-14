@@ -39,6 +39,16 @@ const traverseExcel = (excel) => {
       grandTotal = row[row.length - 2];
     }
 
+    if (row.includes("End Period:")) {
+      for (let x = 0; x < row.length; x++) {
+        if (row[x] instanceof Date) {
+          const endP = new Date(row[x]);
+
+          // check if end period is closest to the end period of today's date
+        }
+      }
+    }
+
     if (start && end) {
       const bothWeeks = row.slice(6, row.length - 2);
       const shiftHours = calculateShiftTimes(row);
