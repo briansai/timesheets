@@ -5,7 +5,7 @@ const traverseRow = ({ row, hours }) => {
   let errors = [];
 
   const weekOne = row.slice(6, 13);
-  const weekTwo = row.slice(13, row.length - 3);
+  const weekTwo = row.slice(13, row.length - 2);
 
   const weekOneHoursMatch = matchHours({ week: weekOne, hours });
   const weekTwoHoursMatch = matchHours({ week: weekTwo, hours });
