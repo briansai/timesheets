@@ -1,3 +1,4 @@
+import moment from "moment";
 import { calculateShiftTimes } from "./calculateShiftTimes";
 import { calculateTotalHours } from "./calculateTotalHours";
 import { traverseCol } from "./traverseCol";
@@ -15,21 +16,20 @@ const traverseExcel = (excel) => {
   const ep = endPeriods("2025-01-17", 26).map((d) => d.getTime());
   const dateToday = new Date();
   const dt = dateToday.getTime();
+  const twoWeeks = timesheet[12].slice(6, timesheet[12].length - 2);
 
   let endPeriod = null;
   let grandTotal = 0;
 
-  const twoWeeksOfDates = timesheet[12]
-    .slice(6, timesheet[12].length - 2)
-    .map((date) => {
-      if (date instanceof Date) {
-        const d = new Date(date);
-        const month = d.getUTCMonth() + 1;
-        const day = d.getUTCDate();
+  const twoWeeksOfDates = twoWeeks.map((date) => {
+    if (date instanceof Date) {
+      const d = new Date(date);
+      const month = d.getUTCMonth() + 1;
+      const day = d.getUTCDate();
 
-        return `${month}/${day}`;
-      }
-    });
+      return `${month}/${day}`;
+    }
+  });
 
   for (let x = 0; x < timesheet.length; x++) {
     const row = timesheet[x];
@@ -58,9 +58,24 @@ const traverseExcel = (excel) => {
             const epString = getDate(endPeriod);
             const tsEpString = getDate(row[x]);
 
-            errors.push(`End Period should be ${epString}, not ${tsEpString} `);
+            errors.push(`End Period should be ${epString}, NOT ${tsEpString} `);
           }
         }
+      }
+
+      let temp = endPeriod;
+      const periods = twoWeeksOfDates.reverse();
+      console.log(temp);
+      for (let i = 0; i < 14; i++) {
+        const tempDate = `${temp.getUTCMonth() + 1}/${temp.getUTCDate()}`;
+
+        if (periods[i] === undefined) {
+          continue;
+        } else if (periods[i] !== tempDate) {
+          errors.push(`${periods[i]} should be ${tempDate}`);
+        }
+
+        temp.setDate(temp.getDate() - 1);
       }
     }
 

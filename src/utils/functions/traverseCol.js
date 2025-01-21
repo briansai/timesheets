@@ -1,5 +1,5 @@
 const traverseCol = ({ activeRows, twoWeeksOfDates }) => {
-  const bothWeeksLength = activeRows[0].bothWeeks.length;
+  const bothWeeksLength = activeRows[0] && activeRows[0].bothWeeks.length;
   const errors = [];
   let x = 0;
 
