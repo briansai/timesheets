@@ -66,7 +66,7 @@ const traverseExcel = (excel) => {
       let temp = endPeriod;
       const periods = twoWeeksOfDates.reverse();
 
-      for (let i = 0; i < 14; i++) {
+      for (let i = 0; i < 15; i++) {
         const tempDate = `${temp.getUTCMonth() + 1}/${temp.getUTCDate()}`;
 
         if (periods[i] === undefined) {
