@@ -1,5 +1,3 @@
-import React from "react";
-
 const sumWeekCorrect = ({ week, totalWeekHour }) => {
   let sumCorrect = "";
   const sum = week.reduce((acc, cur) => {

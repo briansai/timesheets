@@ -2,6 +2,8 @@ import { calculateShiftTimes } from "./calculateShiftTimes";
 import { calculateTotalHours } from "./calculateTotalHours";
 import { traverseCol } from "./traverseCol";
 import { traverseRow } from "./traverseRow";
+import { endPeriods } from "./endPeriods";
+import { getDate } from "./getDate";
 
 const traverseExcel = (excel) => {
   const timesheet = excel;
@@ -10,9 +12,13 @@ const traverseExcel = (excel) => {
   const weekOneTotal = [];
   const weekTwoTotal = [];
   const totalHours = [];
+  const ep = endPeriods("2025-01-17", 26).map((d) => d.getTime());
+  const dateToday = new Date();
+  const dt = dateToday.getTime();
+
+  let endPeriod = null;
   let grandTotal = 0;
 
-  // why does some have UNDEFINED date?
   const twoWeeksOfDates = timesheet[12]
     .slice(6, timesheet[12].length - 2)
     .map((date) => {
@@ -42,9 +48,18 @@ const traverseExcel = (excel) => {
     if (row.includes("End Period:")) {
       for (let x = 0; x < row.length; x++) {
         if (row[x] instanceof Date) {
-          const endP = new Date(row[x]);
+          for (let x = 0; x < ep.length; x++) {
+            if (dt > ep[x] && dt <= ep[x + 1]) {
+              endPeriod = new Date(ep[x + 1]);
+            }
+          }
 
-          // check if end period is closest to the end period of today's date
+          if (row[x].toUTCString() !== endPeriod.toUTCString()) {
+            const epString = getDate(endPeriod);
+            const tsEpString = getDate(row[x]);
+
+            errors.push(`End Period should be ${epString}, not ${tsEpString} `);
+          }
         }
       }
     }
